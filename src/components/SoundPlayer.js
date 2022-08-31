@@ -14,7 +14,7 @@ class SoundPlayer extends Component {
     const classes = `${buttonClicked ? 'on' : 'off'} ${note.length === 2 ? 'white' : 'black'}`
     return (
       <div>
-        <button onClick={() => handleClick(keyNum, note)} className={classes}>{note.slice(0, note.length - 1)}</button>
+        <button onClick={() => handleClick(keyNum, note)} className={classes}>{/*note.slice(0, note.length - 1)*/}</button>
         {/* <p>{message}</p> */}
       </div>
     )

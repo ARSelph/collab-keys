@@ -7,8 +7,16 @@ class App extends Component {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      buttonClicked: [false, false, false, false, false, false, false, false, false, false, false, false, false]
+      buttonClicked: this.setButtons() //[false, false, false, false, false, false, false, false, false, false, false, false, false]
     }
+  }
+
+  setButtons() {
+    const buttons = [];
+    for (let i = 0; i < Object.keys(SoundManager).length; i++) {
+      buttons.push(false);
+    }
+    return buttons;
   }
 
   handleClick(position, note) {
