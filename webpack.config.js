@@ -25,10 +25,19 @@ module.exports = {
         }
       },
       {
-        test: /\.mp3$/,
+        test: /\.mp3$|\.wav$|\.m4a$/,
         use: {
           loader: 'file-loader'
         }
+      },
+      {
+        test: /\.s?[ac]ss$/,
+        exclude: /node_modules/,
+        use: [
+          'style-loader',
+          'css-loader', 
+          'sass-loader'
+        ]
       }
     ]
   }

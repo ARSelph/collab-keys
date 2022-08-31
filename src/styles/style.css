@@ -1,0 +1,32 @@
+#keyboard {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+h1 {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+button.white {
+  background-color: white;
+  border-color: black;
+  margin: 10px;
+  color: black;
+  height: 220px;
+  width: 60px;
+}
+
+button.black {
+  background-color: black;
+  margin: 0px;
+  color: white;
+  height: 150px;
+  width: 30px;
+}
+
+button.on {
+  background-color: greenyellow;
+}

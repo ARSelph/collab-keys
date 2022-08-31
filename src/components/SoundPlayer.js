@@ -1,26 +1,21 @@
 import React, { Component } from 'react';
-import SoundManager from './SoundManager.js';
 
 class SoundPlayer extends Component {
-  
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     previousState
+  //   }
+  // }
+
   render() {
-    const { buttonClicked, note } = this.props;
-    let message = 'this shouldn\t show';
-    // console.log(SoundManager.testPianoSound);
-    if (buttonClicked) {
-      message = 'turned on';
-      SoundManager[note].loop = true;
-      SoundManager[note].load();
-      SoundManager[note].play();
-    }
-    else {
-      message = 'turned off';
-      SoundManager[note].pause();
-    }
+    const { buttonClicked, note, keyNum, handleClick } = this.props;
+    const message = buttonClicked ? 'Playing note' : '--';
+    const classes = `${buttonClicked ? 'on' : 'off'} ${note.length === 2 ? 'white' : 'black'}`
     return (
-      <div id='keys'>
-        <button onClick={this.props.handleClick}>{buttonClicked ? 'Pause' : 'Play'}</button>
-        <p>{message}</p>
+      <div>
+        <button onClick={() => handleClick(keyNum, note)} className={classes}>{note.slice(0, note.length - 1)}</button>
+        {/* <p>{message}</p> */}
       </div>
     )
   }

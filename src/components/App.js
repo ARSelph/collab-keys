@@ -1,17 +1,28 @@
 import React, { Component } from 'react';
-import SoundPlayer from './SoundPlayer.js';
+import SoundManager from '../SoundManager.js';
+import Keyboard from './Keyboard.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      buttonClicked: false //[false, false, false]
+      buttonClicked: [false, false, false, false, false, false, false, false, false, false, false, false, false]
     }
   }
 
-  handleClick() {
-    this.setState({buttonClicked: !this.state.buttonClicked});
+  handleClick(position, note) {
+    console.log('clicked from', position);
+    if (!this.state.buttonClicked[position]) {
+      SoundManager[note].loop = true;
+      SoundManager[note].load();
+      SoundManager[note].play();
+    } else {
+      SoundManager[note].pause();
+    }
+    const newButtons = this.state.buttonClicked.slice();
+    newButtons[position] = !newButtons[position];
+    this.setState({buttonClicked: newButtons});
   }
   
   render() {
@@ -20,7 +31,7 @@ class App extends Component {
         <div id='title'>
           <h1>CollabKeys</h1>
         </div>
-        <SoundPlayer buttonClicked={this.state.buttonClicked} handleClick={this.handleClick} note='testPianoSound' />
+        <Keyboard buttonClicked={this.state.buttonClicked} handleClick={this.handleClick} notes={Object.keys(SoundManager)} />
       </div>
     )
   }
