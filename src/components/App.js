@@ -73,52 +73,10 @@ class App extends Component {
   }
 
   submitChord(event) {
-    console.log(`setting a ${this.state.chordType} chord on ${this.state.chordNote}`);
+    // console.log(`setting a ${this.state.chordType} chord on ${this.state.chordNote}`);
     event.preventDefault();
-    let startIndex;
-    switch (this.state.chordNote) {
-      case 'C':
-        startIndex = 0;
-        break;
-      case 'C#':
-        startIndex = 1;
-        break;
-      case 'D':
-        startIndex = 2;
-        break;
-      case 'D#':
-        startIndex = 3;
-        break;
-      case 'E':
-        startIndex = 4;
-        break;
-      case 'F':
-        startIndex = 5;
-        break;
-      case 'F#':
-        startIndex = 6;
-        break;
-      case 'G':
-        startIndex = 7;
-        break;
-      case 'Ab':
-        startIndex = 8;
-        break;
-      case 'A':
-        startIndex = 9;
-        break;
-      case 'Bb':
-        startIndex = 10;
-        break;
-      case 'B':
-        startIndex = 11;
-        break;
-      case 'C':
-        startIndex = 12;
-        break;
-      default:
-        console.log('expected a valid note, got none');
-    }
+    const noteArr = posToNote.slice(0, 12).map(note => note.slice(0, note.length - 1));
+    const startIndex = noteArr.indexOf(this.state.chordNote);
     const chordNums = [startIndex];
     switch (this.state.chordType) {
       case 'major':
@@ -132,6 +90,9 @@ class App extends Component {
         break;
       case 'diminished':
         chordNums.push(startIndex + 3, startIndex + 6);
+        break;
+      case 'major 7th':
+        chordNums.push(startIndex + 4, startIndex + 7, startIndex + 11);
         break;
       case 'dominant 7th':
         chordNums.push(startIndex + 4, startIndex + 7, startIndex + 10);
@@ -163,7 +124,6 @@ class App extends Component {
       handleMouseUp: this.handleMouseUp,
       setSustain: this.setSustain
     }
-    console.log('sustain', this.state.sustain);
     return (
       <div id='main'>
         <div id='title'>

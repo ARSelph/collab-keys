@@ -21,6 +21,7 @@
   "homepage": "https://github.com/ARSelph/solo-project#readme",
   "dependencies": {
     "express": "^4.18.1",
+    "mongoose": "^6.5.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
@@ -30,6 +31,8 @@
     "@babel/preset-react": "^7.18.6",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
+    "eslint": "^8.23.0",
+    "eslint-plugin-react": "^7.31.1",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "sass": "^1.54.7",

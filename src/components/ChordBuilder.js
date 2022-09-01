@@ -20,6 +20,7 @@ class ChordBuilder extends Component {
               <option value="minor">minor</option>
               <option value="augmented">augmented</option>
               <option value="diminished">diminished</option>
+              <option value="major 7th">major 7th</option>
               <option value="dominant 7th">dominant 7th</option>
               <option value="minor 7th">minor 7th</option>
             </select>

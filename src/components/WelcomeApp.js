@@ -11,7 +11,7 @@ class WelcomeApp extends Component {
         <div id='title'>
           <h1>Welcome to CollabKeys!</h1>
         </div>
-        <p>Click <a href='/app'>HERE</a> to proceed to the main site</p>
+        <p>Click <a href='/app'>HERE</a> to start a new session</p>
       </div>
     )
   }
