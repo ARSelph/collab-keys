@@ -3,18 +3,16 @@ import SoundPlayer from './SoundPlayer';
 
 class Keyboard extends Component {
   render() {
-    const { buttonClicked, handleClick, notes } = this.props;
-    // const notesArr = ['C3', 'C#3', 'D3', 'D#3', 'E3', 'F3', 'F#3', 'G3', 'Ab3', 'A3', 'Bb3', 'B3', 'C4'];
+    const { buttonClicked, notes, handlers, sustain } = this.props;
     const soundPlayers = [];
     for (let i = 0; i < notes.length; i++) {
-      soundPlayers.push(<SoundPlayer buttonClicked={buttonClicked[i]} handleClick={handleClick} note={notes[i]} keyNum={i} />);
+      soundPlayers.push(<SoundPlayer buttonClicked={buttonClicked[i]} handlers={handlers} note={notes[i]} keyNum={i} sustain={sustain}/>);
     }
     return (
       <div id='keyboard'>
-        {/* <SoundPlayer buttonClicked={buttonClicked[0]} handleClick={handleClick} note='C4' keyNum={0} />
-        <SoundPlayer buttonClicked={buttonClicked[1]} handleClick={handleClick} note='G4' keyNum={1} />
-        <SoundPlayer buttonClicked={buttonClicked[2]} handleClick={handleClick} note='C5' keyNum={2} /> */}
         {soundPlayers}
+        <label htmlFor='sustain'>Sustain</label>
+        <input type="checkbox" id="sustain" name="sustain" checked={sustain} onChange={handlers.setSustain}></input>
       </div>
     )
   }
