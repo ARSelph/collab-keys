@@ -4,7 +4,8 @@ const HTMLWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: {
     index: './src/scripts/index.js',
-    welcome: './src/scripts/welcome.js'
+    welcome: './src/scripts/welcome.js',
+    observer: './src/scripts/observer.js'
   },
   output: {
     path: path.join(__dirname, '/dist'),
@@ -18,6 +19,10 @@ module.exports = {
     new HTMLWebpackPlugin({
       template: './src/welcome.html',
       filename: './welcome.html'
+    }),
+    new HTMLWebpackPlugin({
+      template: './src/indexobs.html',
+      filename: './indexobs.html'
     })
   ],
   mode: process.env.NODE_ENV,

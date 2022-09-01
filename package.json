@@ -20,10 +20,12 @@
   },
   "homepage": "https://github.com/ARSelph/solo-project#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
     "mongoose": "^6.5.4",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.13",

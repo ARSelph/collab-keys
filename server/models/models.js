@@ -15,7 +15,6 @@ mongoose.connect(MONGO_URI, {
 const Schema = mongoose.Schema;
 
 const sessionSchema = new Schema ({
-  name: {type: String, required: true},
   buttonClicked: Array,
   sustain: Boolean,
   createdAt: {type: Date, expires: 300, default: Date.now}

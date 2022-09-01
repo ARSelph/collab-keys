@@ -11,7 +11,14 @@ class WelcomeApp extends Component {
         <div id='title'>
           <h1>Welcome to CollabKeys!</h1>
         </div>
-        <p>Click <a href='/app'>HERE</a> to start a new session</p>
+        <div id='buttons'>
+          <a href='/app'>
+            <button className='welcome appButton'>Click here to start a new session</button>
+          </a>
+          <a href='/obsapp'>
+            <button className='welcome obsButton'>Click here to join an existing session</button>
+          </a>
+        </div>
       </div>
     )
   }

@@ -14,11 +14,40 @@ class App extends Component {
     this.changeNote = this.changeNote.bind(this);
     this.submitChord = this.submitChord.bind(this);
     this.state = {
+      sessionId: '',
       buttonClicked: this.setButtons(),
       sustain: false,
       chordType: 'major',
       chordNote: 'C'
     }
+  }
+
+  componentDidMount() {
+    fetch('api/session', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({buttonClicked: this.state.buttonClicked, sustain: this.state.sustain}),
+    })
+    .then(res => res.json())
+    .then((data) => {
+      console.log('fetched data:', data);
+      this.setState({sessionId: data._id})
+    })
+    .catch(err => console.log('error in creating session:', err));
+  }
+
+  componentDidUpdate() {
+    fetch('/api/session', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({_id: this.state.sessionId, change: {buttonClicked: this.state.buttonClicked, sustain: this.state.sustain}})
+    })
+    .then(res => console.log(`updated session: ${this.state.sessionId}`))
+    .catch(err => console.log('failed to update session:', err))
   }
 
   setButtons() {
@@ -129,7 +158,8 @@ class App extends Component {
         <div id='title'>
           <h1>CollabKeys</h1>
         </div>
-        <Keyboard buttonClicked={this.state.buttonClicked} handlers={handlers} notes={Object.keys(SoundManager)} sustain={this.state.sustain}/>
+        <h2>Shareable session ID: {this.state.sessionId}</h2>
+        <Keyboard buttonClicked={this.state.buttonClicked} handlers={handlers} notes={Object.keys(SoundManager)} sustain={this.state.sustain} observer={false}/>
         <ChordBuilder chordType={this.state.chordType} chordNote={this.state.chordNote} changeNote={this.changeNote} changeChord={this.changeChord} submitChord={this.submitChord}/>
       </div>
     )
