@@ -68,7 +68,6 @@ class App extends Component {
         </div>
         <label>Paste your shared link here, then follow along with your partner!</label>
         <input type='text' value={this.state.sessionId} onChange={this.handleChange}></input>
-        <h2>Shareable session ID: {this.state.sessionId}</h2>
         <Keyboard buttonClicked={this.state.buttonClicked} notes={Object.keys(SoundManager)} sustain={this.state.sustain} handlers={handlers}/>
         <button onClick={this.refreshState}>Refresh</button>
       </div>
