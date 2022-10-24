@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import SoundManager, {posToNote} from '../SoundManager.js';
 import Keyboard from './Keyboard.js';
 
-class App extends Component {
+class ObserverPiano extends Component {
   constructor(props) {
     super(props);
     this.handleChange = this.handleChange.bind(this);
@@ -75,4 +75,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default ObserverPiano;

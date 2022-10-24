@@ -3,7 +3,7 @@ import SoundManager, {posToNote} from '../SoundManager.js';
 import Keyboard from './Keyboard.js';
 import ChordBuilder from './ChordBuilder.js';
 
-class App extends Component {
+class PlayerPiano extends Component {
   constructor(props) {
     super(props);
     // this.handleClick = this.handleClick.bind(this);
@@ -166,4 +166,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default PlayerPiano;
