@@ -1,113 +1,102 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import SoundManager, {posToNote} from '../SoundManager.js';
 import Keyboard from './Keyboard.js';
 import ChordBuilder from './ChordBuilder.js';
 
-class PlayerPiano extends Component {
-  constructor(props) {
-    super(props);
-    // this.handleClick = this.handleClick.bind(this);
-    this.handleMouseDown = this.handleMouseDown.bind(this);
-    this.handleMouseUp = this.handleMouseUp.bind(this);
-    this.setSustain = this.setSustain.bind(this);
-    this.changeChord = this.changeChord.bind(this);
-    this.changeNote = this.changeNote.bind(this);
-    this.submitChord = this.submitChord.bind(this);
-    this.state = {
-      sessionId: '',
-      buttonClicked: this.setButtons(),
-      sustain: false,
-      chordType: 'major',
-      chordNote: 'C'
-    }
+const setButtons = () => {
+  const buttons = [];
+  for (let i = 0; i < posToNote.length; i++) {
+    buttons.push(false);
   }
+  return buttons;
+}
 
-  componentDidMount() {
+const PlayerPiano = () => {
+  const [sessionId, setSessionId] = useState('');
+  const [buttonClicked, setButtonClicked] = useState(setButtons());
+  const [sustain, setSustain] = useState(false);
+  const [chordType, setChordType] = useState('major');
+  const [chordNote, setChordNote] = useState('C');
+
+  useEffect(() => {
     fetch('api/session', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({buttonClicked: this.state.buttonClicked, sustain: this.state.sustain}),
+      body: JSON.stringify({buttonClicked, sustain}),
     })
     .then(res => res.json())
     .then((data) => {
       console.log('fetched data:', data);
-      this.setState({sessionId: data._id})
+      setSessionId(data._id)
     })
     .catch(err => console.log('error in creating session:', err));
-  }
+  }, [])
 
-  componentDidUpdate() {
+  useEffect(() => {
     fetch('/api/session', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({_id: this.state.sessionId, change: {buttonClicked: this.state.buttonClicked, sustain: this.state.sustain}})
+      body: JSON.stringify({_id: sessionId, change: {buttonClicked, sustain}})
     })
-    .then(res => console.log(`updated session: ${this.state.sessionId}`))
+    .then(res => console.log(`updated session: ${sessionId}`))
     .catch(err => console.log('failed to update session:', err))
-  }
+  })
 
-  setButtons() {
-    const buttons = [];
-    for (let i = 0; i < posToNote.length; i++) {
-      buttons.push(false);
-    }
-    return buttons;
-  }
-
-  setSustain() {
-    if (this.state.sustain === true) {
+  const changeSustain = () => {
+    if (sustain === true) {
       const newButtons = [];
-      for (let i = 0; i < this.state.buttonClicked.length; i++) {
-        if (this.state.buttonClicked[i]) {
+      for (let i = 0; i < buttonClicked.length; i++) {
+        if (buttonClicked[i]) {
           SoundManager[posToNote[i]].pause();
         }
         newButtons.push(false);
       }
-      this.setState({sustain: false, buttonClicked: newButtons})
-    } else this.setState({sustain: true});
+      setSustain(false);
+      setButtonClicked(newButtons);
+    } else setSustain(true);
   }
 
-  handleMouseDown(position, note) {
-    if (!this.state.buttonClicked[position]) {
+  const handleMouseDown = (position, note) => {
+    if (!buttonClicked[position]) {
       SoundManager[note].loop = true;
       SoundManager[note].load();
       SoundManager[note].play();
     } else {
       SoundManager[note].pause();
     }
-    const newButtons = this.state.buttonClicked.slice();
+    const newButtons = buttonClicked.slice();
     newButtons[position] = !newButtons[position];
-    this.setState({buttonClicked: newButtons});
+    setButtonClicked(newButtons);
   }
 
-  handleMouseUp(position, note) {
+  const handleMouseUp = (position, note) => {
     SoundManager[note].pause();
-    const newButtons = this.state.buttonClicked.slice();
+    const newButtons = buttonClicked.slice();
     newButtons[position] = false;
-    this.setState({buttonClicked: newButtons});
+    setButtonClicked(newButtons);
   }
 
-  changeNote() {
+  const changeNote = () => {
     console.log('new note:', event.target.value);
-    this.setState({chordNote: event.target.value});
+    setChordNote(event.target.value);
   }
 
-  changeChord() {
+  const changeChord = () => {
     console.log('new chord:', event.target.value);
-    this.setState({chordType: event.target.value});
+    setChordType(event.target.value);
   }
 
-  submitChord(event) {
-    // console.log(`setting a ${this.state.chordType} chord on ${this.state.chordNote}`);
+  const submitChord = (event) => {
+    // console.log(`setting a ${chordType} chord on ${chordNote}`);
     event.preventDefault();
     const noteArr = posToNote.slice(0, 12).map(note => note.slice(0, note.length - 1));
-    const startIndex = noteArr.indexOf(this.state.chordNote);
+    const startIndex = noteArr.indexOf(chordNote);
     const chordNums = [startIndex];
-    switch (this.state.chordType) {
+    switch (chordType) {
       case 'major':
         chordNums.push(startIndex + 4, startIndex + 7);
         break;
@@ -131,9 +120,9 @@ class PlayerPiano extends Component {
       default:
         console.log('expected a valid chord, got none');
     }
-    const newButtons = this.setButtons();
-    for (let i = 0; i < this.state.buttonClicked.length; i++) {
-      if (this.state.buttonClicked[i] && !chordNums.includes(i)) {
+    const newButtons = setButtons();
+    for (let i = 0; i < buttonClicked.length; i++) {
+      if (buttonClicked[i] && !chordNums.includes(i)) {
         SoundManager[posToNote[i]].pause();
       }
     }
@@ -144,26 +133,22 @@ class PlayerPiano extends Component {
       SoundManager[note].load();
       SoundManager[note].play();
     })
-    this.setState({buttonClicked: newButtons, sustain: true});
+    setButtonClicked(newButtons);
+    setSustain(true);
   }
   
-  render() {
-    const handlers = {
-      handleMouseDown: this.handleMouseDown,
-      handleMouseUp: this.handleMouseUp,
-      setSustain: this.setSustain
-    }
-    return (
-      <div id='main'>
-        <div id='title'>
-          <h1>CollabKeys</h1>
-        </div>
-        <h2>Shareable session ID: {this.state.sessionId}</h2>
-        <Keyboard buttonClicked={this.state.buttonClicked} handlers={handlers} notes={Object.keys(SoundManager)} sustain={this.state.sustain} observer={false}/>
-        <ChordBuilder chordType={this.state.chordType} chordNote={this.state.chordNote} changeNote={this.changeNote} changeChord={this.changeChord} submitChord={this.submitChord}/>
+  const handlers = {changeSustain, handleMouseDown, handleMouseUp}
+
+  return (
+    <div id='main'>
+      <div id='title'>
+        <h1>CollabKeys</h1>
       </div>
-    )
-  }
+      <h2>Shareable session ID: {sessionId}</h2>
+      <Keyboard buttonClicked={buttonClicked} handlers={handlers} notes={Object.keys(SoundManager)} sustain={sustain} observer={false}/>
+      <ChordBuilder chordType={chordType} chordNote={chordNote} changeNote={changeNote} changeChord={changeChord} submitChord={submitChord}/>
+    </div>
+  )
 }
 
 export default PlayerPiano;
