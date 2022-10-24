@@ -2,29 +2,31 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: {
-    index: './src/scripts/index.js',
-    welcome: './src/scripts/welcome.js',
-    observer: './src/scripts/observer.js'
-  },
+  entry: './src/index.js',
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: '[name].bundle.js',
+    filename: 'bundle.js',
   },
   plugins: [
     new HTMLWebpackPlugin({
       template: './src/index.html',
       filename: './index.html'
-    }),
-    new HTMLWebpackPlugin({
-      template: './src/welcome.html',
-      filename: './welcome.html'
-    }),
-    new HTMLWebpackPlugin({
-      template: './src/indexobs.html',
-      filename: './indexobs.html'
     })
   ],
+  devServer: {
+    historyApiFallback: true,
+    static: {
+      directory: path.resolve(__dirname, 'dist'),
+      //publicPath: '/bundleFolder'
+    },
+    proxy: {
+      '/api' : 'http://localhost:3000',
+    },
+    compress: false,
+    host: 'localhost',
+    port: 8080,
+    hot: true,
+  },
   mode: process.env.NODE_ENV,
   module: {
     rules: [
