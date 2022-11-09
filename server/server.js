@@ -16,19 +16,7 @@ app.use('/dist', express.static(path.join(__dirname, '../dist')));
 
 app.use('/api', apiRouter);
 
-// serve index.html on the route '/'
-// app.get('/app', (req, res) => {
-//   console.log('trying to get site');
-//   return res.status(200).sendFile(path.join(__dirname, '../src/index.html'));
-// });
-
-// app.get('/obsapp', (req, res) => {
-//   console.log('trying to get observer site');
-//   return res.status(200).sendFile(path.join(__dirname, '../src/indexobs.html'))
-// })
-
 app.get('/', (req, res) => {
-  console.log('trying to get welcome');
   return res.status(200).sendFile(path.join(__dirname, '../src/index.html'));
 })
 
